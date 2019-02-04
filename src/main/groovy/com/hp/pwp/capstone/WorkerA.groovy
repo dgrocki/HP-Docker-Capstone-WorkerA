@@ -8,33 +8,19 @@ import java.io.IOException
 import java.io.OutputStreamWriter
 import java.io.Writer
 
-/*
-public class Writer {
-	public void writing() {
-		try {
-			//Whatever the file path is.
-			File test = new File("./Test.txt")
-			FileOutputStream is = new FileOutputStream(test)
-			OutputStreamWriter osw = new OutputStreamWriter(is)
-			Writer w = new BufferedWriter(osw)
-			w.write("Test")
-			w.close()
-		}catch (IOException e) {
-			System.err.println("Problem writing to the file")
-		}
-    }
-}
-*/
-
 public class Convert {
 	public static void main(String [] args) {
 		String json = "{" + "'path': './Json/Pages'," + "'WID': 1019," + "'JID': 1109," + "'jpages':9" + "}"
 		JsontoJava data = new Gson().fromJson(json, JsontoJava.class)
 		System.out.println("PathtoPDF:" + data.path + " WorkerID:" + data.WID  + " JobID:" + data.JID + " JobPages:" + data.jpages)
-//	Writer write = new Writer()
-//   write.writing()		
+
+		PrintWriter writer = new PrintWriter("./mnt/test.txt", "UTF-8");
+		writer.println("The first line");
+		writer.println("The second line");
+		writer.close();
 	}
 }
+
 
 class JsontoJava {
 	private String path
