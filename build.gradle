@@ -16,7 +16,7 @@ plugins {
 	
 }
 application {
-	mainClassName = 'com.hp.pwp.capstone.toBin'
+	mainClassName = 'com.hp.pwp.capstone.Convert'
 }
 dependencies {
     // Use the latest Groovy version for building this library
@@ -24,6 +24,8 @@ dependencies {
 
     // Use the awesome Spock testing and specification framework
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+
+    implementation 'com.google.code.gson:gson:2.8.5'
 }
 
 // In this section you declare where to find the dependencies of your project
@@ -36,7 +38,7 @@ repositories {
 
 jar {
 	manifest {
-		attributes "Main-Class": "com.hp.pwp.capstone.toBin" ;
+		attributes "Main-Class": "com.hp.pwp.capstone.Convert" ;
 	}
 }
 
@@ -45,16 +47,16 @@ task uberjar(type: Jar, dependsOn: [':compileJava', ':compileGroovy', 'compileSo
     from configurations.runtime.asFileTree.files.collect { zipTree(it) }
 
     manifest {
-        attributes 'Main-Class': 'com.hp.pwp.capstone.toBin'
+        attributes 'Main-Class': 'com.hp.pwp.capstone.Convert'
     }
 }
 
 task buildImage(type:Exec) {
-    commandLine 'docker', 'build', '-t', 'bintodec', '.'
+    commandLine 'docker', 'build', '-t', 'WorkerA', '.'
 }
 
 task runImage(type:Exec) {
-    commandLine 'docker', 'run', '-i', 'bintodec'
+    commandLine 'docker', 'run', '-i', 'WorkerA'
 }
 
 
