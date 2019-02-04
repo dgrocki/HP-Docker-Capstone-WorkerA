@@ -14,6 +14,11 @@ public class Convert {
 		JsontoJava data = new Gson().fromJson(json, JsontoJava.class)
 		System.out.println("PathtoPDF:" + data.path + " WorkerID:" + data.WID  + " JobID:" + data.JID + " JobPages:" + data.jpages)
 
+		Gson gson = new Gson()
+
+		String jsonString = gson.toJson(data)
+		System.out.println(jsonString)
+
 		PrintWriter writer = new PrintWriter("./mnt/test.txt", "UTF-8");
 		writer.println("The first line");
 		writer.println("The second line");
