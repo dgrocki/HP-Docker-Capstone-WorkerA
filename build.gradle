@@ -21,11 +21,12 @@ application {
 dependencies {
     // Use the latest Groovy version for building this library
     compile 'org.codehaus.groovy:groovy-all:2.4.15'
-
+    compile 'org.apache.pdfbox:pdfbox:2.0.13'
     // Use the awesome Spock testing and specification framework
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
 
     implementation 'com.google.code.gson:gson:2.8.5'
+
 }
 
 // In this section you declare where to find the dependencies of your project
