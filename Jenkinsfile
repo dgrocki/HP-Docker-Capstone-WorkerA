@@ -25,7 +25,11 @@ node('docker') {
 	if (exists) {
 	    echo 'The Jar Exists'
 	} else {
-	    echo 'Can not find the jar'
+		echo 'Can not find the jar'
+		output=sh (
+			script: 'ls -LR',
+			returnStdout: true
+		).trim()
 	}
 	app = docker.build("iceberg00/hp-docker-capstone-workera")
 	}
