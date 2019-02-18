@@ -21,6 +21,7 @@ node('docker') {
 		/* This builds the actual image; synonymous to
 		* docker build on the command line */
 	//Check if file exists
+	sh './gradlew build'
 	def exists = fileExists './build/libs/WorkerA-all.jar'
 	if (exists) {
 	    echo 'The Jar Exists'
