@@ -20,6 +20,13 @@ node('docker') {
 	stage('Build image') {
 		/* This builds the actual image; synonymous to
 		* docker build on the command line */
+	//Check if file exists
+	def exists = fileExists './build/libs/WorkerA-all.jar'
+	if (exists) {
+	    echo 'The Jar Exists'
+	} else {
+	    echo 'Can not find the jar'
+	}
 	app = docker.build("iceberg00/hp-docker-capstone-workera")
 	}
 
