@@ -30,6 +30,7 @@ node('docker') {
 			script: 'ls -LR',
 			returnStdout: true
 		).trim()
+		echo output
 	}
 	app = docker.build("iceberg00/hp-docker-capstone-workera")
 	}
