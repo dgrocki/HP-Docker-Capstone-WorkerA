@@ -61,5 +61,5 @@ task uberjar(type: Jar, dependsOn: [':compileJava', ':compileGroovy', 'compileSo
 //}
 
 
-build.finalizedBy(uberjar)
+//build.finalizedBy(uberjar)
 //build.finalizedBy(runImage)
