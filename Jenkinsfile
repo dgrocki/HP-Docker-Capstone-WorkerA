@@ -9,18 +9,18 @@ node('docker') {
 	}
 
 	stage('Gradle Build') {
-	sh './gradlew build --no-daemon
+	sh './gradlew --no-daemon build'
 	}
 
 	stage('Gradle Tests') {
-	sh './gradlew test --no-daemon'
+	sh './gradlew --no-daemon test'
 	}	
 
 	stage('Build image') {
 		/* This builds the actual image; synonymous to
 		* docker build on the command line */
 	//Check if file exists
-	sh './gradlew build --no-daemon'
+	sh './gradlew --no-daemon build'
 	def exists = fileExists './build/libs/WorkerA-all.jar'
 	if (exists) {
 	    echo 'The Jar Exists'
