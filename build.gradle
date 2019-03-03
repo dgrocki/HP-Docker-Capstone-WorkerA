@@ -52,14 +52,14 @@ task uberjar(type: Jar, dependsOn: [':compileJava', ':compileGroovy', 'compileSo
     }
 }
 
-task buildImage(type:Exec) {
-    commandLine 'docker', 'build', '-t', 'workera', '.'
-}
+//task buildImage(type:Exec) {
+//    commandLine 'docker', 'build', '-t', 'workera', '.'
+//}
 
-task runImage(type:Exec) {
-    commandLine 'docker', 'run', '-i', 'workera'
-}
+//task runImage(type:Exec) {
+//    commandLine 'docker', 'run', '-i', 'workera'
+//}
 
 
-build.finalizedBy(buildImage)
+//build.finalizedBy(uberjar)
 //build.finalizedBy(runImage)
