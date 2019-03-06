@@ -14,6 +14,16 @@ node('docker') {
 
 	stage('Gradle Tests') {
 	sh './gradlew test'
+	/* Publish test results */
+	publishHTML([
+			 allowMissing: false, 
+			 alwaysLinkToLastBuild: false, 
+			 keepAll: false, 
+			 reportDir: './build/reports/tests/test/', 
+			 reportFiles: 'index.html', 
+			 reportName: 'HTML Test Report', 
+			 reportTitles: ''
+	])
 	}	
 
 	stage('Build image') {
