@@ -19,7 +19,7 @@ import org.apache.pdfbox.pdmodel.font.FileSystemFontProvider
 public class Convert {
 	public static void main(String [] args) {
 		//JSON string
-		String json = "{" + "'path': '/mnt/TestPDF.pdf'," + "'WID': 1019," + "'JID': 1109," + "'startPage':1," + "'endPage': 9" + "}"
+		String json = "{" + "'jobBool': 'True'," + "'path': '/mnt/TestPDF.pdf'," + "'outPath':'/mnt/FinalPDF.pdf'," + "'pageLength': 9," + "'startPage':1," + "'endPage': 9," + "'WID': 1019," + "'JID': 1109," + "'status': 200" + "}"
 		
 		//Convert our JSON to JAVA
 		JsontoJava data = new Gson().fromJson(json, JsontoJava.class)
@@ -48,23 +48,35 @@ public class Convert {
 
 //Functions that handle the JSON conversions
 class JsontoJava {
+	private boolean jobBool
 	private String path
-	private int WID
-	private int JID
+	private String outPath
+	private int pageLength
 	private int startPage
 	private int endPage
+	private int WID
+	private int JID
+	private int status
 
+	public boolean getJobBool() {return jobBool}
 	public String getPath() {return path}
-	public int getWID() {return WID}
-	public int getJID() {return JID}
+	public String getOutPath() {return outPath}
+	public int getPageLength() {return pageLength}
 	public int getStart() {return startPage}
 	public int getEnd() {return endPage}
+	public int getWID() {return WID}
+	public int getJID() {return JID}
+	public int getStatus() {return status}
 
+	public void setJobBool(boolean jobBool) {this.jobBool = jobBool}
 	public void setPath(String path) {this.path = path}
-	public void setWID(int WID) {this.WID = WID}
-	public void setJID(int JID) {this.JID = JID}
+	public void setOutPath(String outpath) {this.outPath = outPath}
+	public void setpageLength(int pageLength) {this.pageLength = pageLength}
 	public void setStart(int startPage) {this.startPage = startPage}
 	public void setEnd(int endPage) {this.endPage = endPage}
+	public void setWID(int WID) {this.WID = WID}
+	public void setJID(int JID) {this.JID = JID}
+	public void setStatus(int status) {this.status = status}
 }
 
 //Function to handle the input to pdfs.
