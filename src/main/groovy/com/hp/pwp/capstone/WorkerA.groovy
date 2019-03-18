@@ -19,8 +19,13 @@ import org.apache.pdfbox.pdmodel.font.FileSystemFontProvider
 public class Convert {
 	public static void main(String [] args) {
 		HttpRequest test = new HttpRequest();
-		println test.get("https://httpbin.org/get");
-		test.post("https://httpbin.org/post",/{"message":"this is a message"}/)
+		String inJson = test.get("http://localhost:8080/workManager/getWorkA");
+		if (inJson != null) {
+			println inJson;
+			EventClient eventClient = new EventClient();
+			eventClient.connect();
+		} 
+		//println test.post("https://httpbin.org/post",/{"message":"this is a message"}/)
 		//JSON string
 		String json = "{" + "'path': '/mnt/TestPDF.pdf'," + "'WID': 1019," + "'JID': 1109," + "'startPage':1," + "'endPage': 9" + "}"
 		
