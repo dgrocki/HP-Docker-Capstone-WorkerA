@@ -18,6 +18,14 @@ import org.apache.pdfbox.pdmodel.font.FileSystemFontProvider
 
 public class Convert {
 	public static void main(String [] args) {
+		HttpRequest test = new HttpRequest();
+		String inJson = test.get("http://localhost:8080/workManager/getWorkA");
+		if (inJson != null) {
+			println inJson;
+			EventClient eventClient = new EventClient();
+			eventClient.connect();
+		} 
+		//println test.post("https://httpbin.org/post",/{"message":"this is a message"}/)
 		//JSON string
 		String json = "{" + "'jobBool': 'True'," + "'path': '/mnt/TestPDF.pdf'," + "'outPath':'/mnt/FinalPDF.pdf'," + "'pageLength': 9," + "'startPage':1," + "'endPage': 9," + "'WID': 1019," + "'JID': 1109," + "'status': 200" + "}"
 		
