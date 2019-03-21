@@ -17,10 +17,9 @@ public class HttpRequest {
       }
       // Otherwise return the response code recieved.
       else {
-        println "error: " + Integer.toString(getRC);
+        return "error: " + Integer.toString(getRC);
       }
     }
-
     catch (Exception ex) {
       // If the connection fails return an error message.
       return "error: unable to open connection with " + iURL;
