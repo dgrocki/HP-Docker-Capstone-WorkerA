@@ -42,12 +42,14 @@ public class Convert {
 				InputPDF input = new InputPDF();
 				input.getPages(data.startPage, data.endPage, data.path);
 			
+
+				
 				
 				//TODO modify the pdf location in shared memory
 						
 
 
-				println test.post("http://localhost:8080/workManager/postWork/",json);
+				println test.post("http://0.0.0.0:8080/workManager/postWork/",json);
 
 			} 
 			println "after socket";
@@ -97,6 +99,10 @@ class JsontoJava {
 class InputPDF {
 	public void getPages(int start, int finish, String path){
 		//This gets rid of all the warnings caused by not having fonts installed
+		println "InputPDF"
+		println path;
+		println finish;
+		println start;
 		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog")
 
 			//Random Computer Science Quotes I found Online 
