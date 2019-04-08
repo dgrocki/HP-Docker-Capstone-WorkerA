@@ -8,6 +8,8 @@ import java.io.IOException
 import java.io.OutputStreamWriter
 import java.io.Writer  
 import java.util.Random
+import java.util.List
+import java.util.ArrayList
 
 import org.apache.pdfbox.pdmodel.PDDocument 
 import org.apache.pdfbox.pdmodel.PDPage
@@ -21,55 +23,37 @@ import groovy.json.JsonSlurper
 public class Convert {
 	public static void main(String [] args) {
 
+		def parser = new JsonSlurper();
+		InputPDF input = new InputPDF();
+		String json = "";
 
-
-		HttpRequest test = new HttpRequest();
+		HttpRequest httpClient = new HttpRequest();
+		EventClient eventClient = new EventClient(input);
+		// Connect to websocket.				
+		eventClient.connect();
 
 		while(1){	
-
-			String json = test.get("http://localhost:8080/workManager/getWorkA");
+			//Get Work from workManager.
+			json = httpClient.get("http://localhost:8080/workManager/getWorkA");
 			if (json != null) {
 				println json;
+
+				//Let the workmanager know we are ready for work.
+				eventClient.ready();
+
 				
-				
-				//websocket				
-				EventClient eventClient = new EventClient();
-				eventClient.connect();
-				
-				
-				def parser = new JsonSlurper();
+				//Convert our JSON to JAVA.
 				def data = parser.parseText(json)
-				InputPDF input = new InputPDF();
+
+				
+
+				//Load in the input pdf.
 				input.getPages(data.startPage, data.endPage, data.path);
-			
 
-				
-				
-				//TODO modify the pdf location in shared memory
-						
-
-
-				println test.post("http://0.0.0.0:8080/workManager/postWork/",json);
-
+				//Post status to workManager.
+				println httpClient.post("http://localhost:8080/workManager/postWork/",json);
 			} 
-			println "after socket";
-			//JSON string
-
-			//Convert our JSON to JAVA
-
 		}
-		//Prints out our JSON now converted to JAVA
-		/*
-		   System.out.println("PathtoPDF:" + data.path + " WorkerID:" + data.WID  + " JobID:" + data.JID + " startPage:" + data.startPage + " EndPage:" + data.endPage)
-		 */
-
-		//Converts our Java back to JSON
-		/*
-		   Gson gson = new Gson()
-		   String jsonString = gson.toJson(data)
-		   System.out.println(jsonString)
-		 */
-
 	}
 }
 
@@ -96,6 +80,21 @@ class JsontoJava {
 
 //Function to handle the input to pdfs.
 class InputPDF {
+	// List of strings to be added to the pdf.
+	private List<String> quotes;
+
+	public InputPDF() {
+		quotes = new ArrayList<String>()
+	}
+	
+	// Member function used to add new quote to the array of quotes.
+	public void setQuotes(String[] newQuotes) {
+		quotes = new ArrayList<String>()
+		for (String quote : newQuotes) {
+			quotes.add(quote);
+		}
+	}
+
 	public void getPages(int start, int finish, String path){
 		//This gets rid of all the warnings caused by not having fonts installed
 		println "InputPDF"
@@ -104,19 +103,6 @@ class InputPDF {
 		println start;
 		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog")
 
-			//Random Computer Science Quotes I found Online 
-			String[] quotes = [
-			"Computing science is no more about computers than astronomy is about telescopes. -Edsger W. Dijkstra",
-			"I don’t need to waste my time with a computer just because I am a computer scientist. -Edsger W. Dijkstra", 
-			"The purpose of computing is insight, not numbers. -Richard Hamming",
-			"An algorithm must be seen to be believed. -Donal Knuth",
-			"Syntactic sugar causes cancer of the semicolon. -Alan J Perlis",
-			"If a program manipulates a large amount of data, it does so in a small number of ways. -Alan J Perlis",
-			"A good system can’t have a weak command language. -Alan J. Perlis",
-			"Representation is the essence of programming. -Fred Brooks",
-			"Elegance is not a dispensable luxury but a quality that decides between success and failure. -Edsger W. Dijkstra",
-			"There is no programming language, no matter how structured, that will prevent programmers from writing bad programs. -Lawrence Flon"
-				]
 
 				//Loading an existing document
 				File file = new File(path)
