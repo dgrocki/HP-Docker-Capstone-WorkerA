@@ -23,28 +23,24 @@ import groovy.json.JsonSlurper
 public class Convert {
 	public static void main(String [] args) {
 
-		HttpRequest httpClient = new HttpRequest();
-		EventClient eventClient = new EventClient();
 		def parser = new JsonSlurper();
-		InputPDF input;
+		InputPDF input = new InputPDF();
 		String json = "";
 
-		while(1){	
-			// Reset input at the start of each loop;
-			input = new InputPDF();
+		HttpRequest httpClient = new HttpRequest();
+		EventClient eventClient = new EventClient(input);
+		// Connect to websocket.				
+		eventClient.connect();
 
+		while(1){	
 			//Get Work from workManager.
 			json = httpClient.get("http://localhost:8080/workManager/getWorkA");
 			if (json != null) {
 				println json;
 
-				for (int i=0; i<10; i++) {
-					input.addQuote(quotes[i]);
-				}
-				*/
-				
-				// Connect to websocket.				
-				eventClient.connect();
+				//Let the workmanager know we are ready for work.
+				eventClient.ready();
+
 				
 				//Convert our JSON to JAVA.
 				def data = parser.parseText(json)
@@ -55,7 +51,7 @@ public class Convert {
 				input.getPages(data.startPage, data.endPage, data.path);
 
 				//Post status to workManager.
-				println httpClient.post("http://0.0.0.0:8080/workManager/postWork/",json);
+				println httpClient.post("http://localhost:8080/workManager/postWork/",json);
 			} 
 		}
 	}
@@ -92,8 +88,11 @@ class InputPDF {
 	}
 	
 	// Member function used to add new quote to the array of quotes.
-	public void addQuote(String quote) {
-		quotes.add(quote);
+	public void setQuotes(String[] newQuotes) {
+		quotes = new ArrayList<String>()
+		for (String quote : newQuotes) {
+			quotes.add(quote);
+		}
 	}
 
 	public void getPages(int start, int finish, String path){
