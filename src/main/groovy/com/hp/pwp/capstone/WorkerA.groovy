@@ -48,35 +48,19 @@ public class Convert {
 				
 
 				//Load in the input pdf.
-				input.getPages(data.startPage, data.endPage, data.path);
+				data.status = input.getPages(data.startPage, data.endPage, data.path, data.status);
+
+				Gson gson = new Gson()
+				String jsonString = gson.toJson(data)
+				System.out.println(jsonString)
 
 				//Post status to workManager.
-				println httpClient.post("http://localhost:8080/workManager/postWork/",json);
+				println httpClient.post("http://localhost:8080/workManager/postWork/",gson);
 			} 
 		}
 	}
 }
 
-//Functions that handle the JSON conversions
-class JsontoJava {
-	private String path
-		private int WID
-		private int JID
-		private int startPage
-		private int endPage
-
-		public String getPath() {return path}
-	public int getWID() {return WID}
-	public int getJID() {return JID}
-	public int getStart() {return startPage}
-	public int getEnd() {return endPage}
-
-	public void setPath(String path) {this.path = path}
-	public void setWID(int WID) {this.WID = WID}
-	public void setJID(int JID) {this.JID = JID}
-	public void setStart(int startPage) {this.startPage = startPage}
-	public void setEnd(int endPage) {this.endPage = endPage}
-}
 
 //Function to handle the input to pdfs.
 class InputPDF {
@@ -95,7 +79,7 @@ class InputPDF {
 		}
 	}
 
-	public void getPages(int start, int finish, String path){
+	public void getPages(int start, int finish, String path, int status){
 		//This gets rid of all the warnings caused by not having fonts installed
 		println "InputPDF"
 		println path;
@@ -109,25 +93,34 @@ class InputPDF {
 				PDDocument document = PDDocument.load(file)
 				start = start - 1
 				finish = finish - 1
-				//Inserting content on each page of the PDF.
-				for (start;start<=finish;start++) {
-					PDPage page = document.getPage(start)
-						PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND,true,true)
-						contentStream.beginText()       
-						//Styling for Content
-						contentStream.setFont(PDType1Font.TIMES_ROMAN, 18)
-						contentStream.newLineAtOffset(297, 25)
-						//Inserting page numbers
-						String pageNum = Integer.toString(start+1)
-						contentStream.showText(pageNum)      
-						contentStream.setFont(PDType1Font.TIMES_ROMAN, 12)
-						contentStream.newLineAtOffset(-250, 600)
-						contentStream.showText(quotes[start])      
-						contentStream.endText()
-						contentStream.close()
+				try{
+					//Inserting content on each page of the PDF.
+					for (start;start<=finish;start++) {
+						PDPage page = document.getPage(start)
+							PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND,true,true)
+							contentStream.beginText()       
+							//Styling for Content
+							contentStream.setFont(PDType1Font.TIMES_ROMAN, 18)
+							contentStream.newLineAtOffset(297, 25)
+							//Inserting page numbers
+							String pageNum = Integer.toString(start+1)
+							contentStream.showText(pageNum)      
+							contentStream.setFont(PDType1Font.TIMES_ROMAN, 12)
+							contentStream.newLineAtOffset(-250, 600)
+							contentStream.showText(quotes[start])      
+							contentStream.endText()
+							contentStream.close()
+							status = 200;
+					} catch(Exception e) {
+						System.out.println("An Error Occured.")
+						status = 500
+						return status;
+					}
+
 				}
 		//Saving and closing the document
 		document.save(new File(path))
 			document.close()
+		return status;
 	}
 }
