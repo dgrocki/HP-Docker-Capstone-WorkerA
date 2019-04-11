@@ -79,7 +79,7 @@ class InputPDF {
 		}
 	}
 
-	public void getPages(int start, int finish, String path, int status){
+	public int getPages(int start, int finish, String path, int status){
 		//This gets rid of all the warnings caused by not having fonts installed
 		println "InputPDF"
 		println path;
@@ -111,16 +111,15 @@ class InputPDF {
 							contentStream.endText()
 							contentStream.close()
 							status = 200;
-					} catch(Exception e) {
-						System.out.println("An Error Occured.")
-						status = 500
-						return status;
-					}
-
+					} 
+				}catch(Exception e) {
+					System.out.println("An Error Occured.")
+					status = 500
+					return status;
 				}
 		//Saving and closing the document
 		document.save(new File(path))
-			document.close()
+		document.close()
 		return status;
 	}
 }
