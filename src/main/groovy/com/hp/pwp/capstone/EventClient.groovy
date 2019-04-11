@@ -10,7 +10,7 @@ public class EventClient
 {
     public static void connect()
     {
-        URI uri = URI.create("ws://localhost:8080/workManager/socket/");
+        URI uri = URI.create("ws://workmanager/workManager/socket/");
 
         WebSocketClient client = new WebSocketClient();
         try

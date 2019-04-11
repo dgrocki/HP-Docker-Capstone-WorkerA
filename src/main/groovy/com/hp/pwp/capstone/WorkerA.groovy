@@ -27,7 +27,9 @@ public class Convert {
 
 		while(1){	
 
-			String json = test.get("http://localhost:8080/workManager/getWorkA");
+		//	String j1 = test.get("workmanager");
+		//	String json = test.get("workmanager/workManager/getWorkA");
+			String json = test.get("localhost:8080/workManager/getWorkA");
 			if (json != null) {
 				println json;
 				
@@ -49,7 +51,8 @@ public class Convert {
 						
 
 
-				println test.post("http://0.0.0.0:8080/workManager/postWork/",json);
+				//println test.post("http://0.0.0.0:8080/workManager/postWork/",json);
+				println test.post("0.0.0.0:8080/workManager/postWork/",json);
 
 			} 
 			println "after socket";
