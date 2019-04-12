@@ -8,32 +8,53 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 public class EventClient
 {
-    public static void connect()
-    {
-        URI uri = URI.create("ws://workmanager/workManager/socket/");
+    private InputPDF pdf;
+    private WebSocketClient client;
+    private URI uri;
+    private Session session;
+    private Boolean isConnected;
+    private WebSocket socket;
 
-        WebSocketClient client = new WebSocketClient();
-        try
-        {
+    public EventClient(InputPDF ipdf) {
+        pdf = ipdf;
+        uri = URI.create("ws://localhost:8080/workManager/socket/");
+        client = new WebSocketClient();
+        // The socket that receives events
+        socket = new WebSocket(pdf, this);
+}
+
+    public void connect()
+    {
+        if (isConnected) {
+            session.close();
+        }
+        isConnected = false;
+        while(!isConnected) {
             try
             {
                 client.start();
-                // The socket that receives events
-                WebSocket socket = new WebSocket();
                 // Attempt Connect
                 Future<Session> fut = client.connect(socket,uri);
                 // Wait for Connect
-                Session session = fut.get();
-                // Send a message
-                session.getRemote().sendString("Ready For Work");
-                // Close session
-                session.close();
+                session = fut.get();
+                // If connection has succeeded set isConnected to true.
+                isConnected = true;
             }
-            finally
+            catch (Throwable t)
             {
+                System.out.println("WebSocket Connection Failed");
+                System.out.println("Waiting 5 Seconds to Attempt Reconnect");
+                sleep(5000);
             }
         }
-        catch (Throwable t)
+    }
+    public void ready() {
+        try 
+        {
+            // Send a message
+            session.getRemote().sendString("Ready For Work");
+        }
+        catch (Throwable t) 
         {
             t.printStackTrace(System.err);
         }
