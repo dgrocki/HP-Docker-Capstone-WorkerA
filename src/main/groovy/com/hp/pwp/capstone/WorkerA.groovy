@@ -55,7 +55,7 @@ public class Convert {
 				System.out.println(jsonString)
 
 				//Post status to workManager.
-				println httpClient.post("http://localhost:8080/workManager/postWork/",gson);
+				println httpClient.post("http://localhost:8080/workManager/postWork/",jsonString);
 			} 
 		}
 	}
